@@ -1,16 +1,38 @@
-import React from "react";
+import { useState } from "react";
 
-type Props = {};
+type Props = {
+  items: string[];
+  heading: string;
+  onSelectItem: (item: string) => void;
+};
 
-const ListGroup = (props: Props) => {
+const ListGroup = ({ items, heading, onSelectItem }: Props) => {
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  const handleClick = (index: number) => {
+    setSelectedIndex(index);
+  };
   return (
-    <ul className="list-group">
-      <li className="list-group-item">An item</li>
-      <li className="list-group-item">A second item</li>
-      <li className="list-group-item">A third item</li>
-      <li className="list-group-item">A fourth item</li>
-      <li className="list-group-item">And a fifth one</li>
-    </ul>
+    <>
+      <h1>{heading}</h1>
+      {items.length === 0 && <p>No item</p>}
+      <ul className="list-group">
+        {items.map((item, index) => (
+          <li
+            key={item}
+            className={`list-group-item ${
+              selectedIndex === index ? "active" : ""
+            }`}
+            onClick={() => {
+              handleClick(index);
+              onSelectItem(item);
+            }}
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 
