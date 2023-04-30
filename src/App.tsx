@@ -1,13 +1,26 @@
+import { useState } from "react";
 import Alert from "./components/Alert";
 import Button from "./components/Button";
 
 type Props = {};
 
 const App = (props: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openAlert = () => {
+    setIsOpen(true);
+  };
+  const closeAlert = () => {
+    setIsOpen(false);
+  };
   return (
     <div>
-      <Alert>Hello World 2</Alert>
-      <Button color="danger" onClick={() => console.log("Click")}>
+      {isOpen && (
+        <Alert isDismissible={true} onDismiss={closeAlert}>
+          My Alert
+        </Alert>
+      )}
+      <Button color="danger" onClick={openAlert}>
         Delete
       </Button>
     </div>
