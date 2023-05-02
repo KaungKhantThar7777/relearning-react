@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 
 type Props = {
   items: string[];
@@ -7,7 +8,7 @@ type Props = {
 };
 
 const ListGroup = ({ items, heading, onSelectItem }: Props) => {
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleClick = (index: number) => {
     setSelectedIndex(index);
@@ -16,24 +17,32 @@ const ListGroup = ({ items, heading, onSelectItem }: Props) => {
     <>
       <h1>{heading}</h1>
       {items.length === 0 && <p>No item</p>}
-      <ul className="list-group">
+      <StyledList>
         {items.map((item, index) => (
-          <li
+          <StyledListItem
             key={item}
-            className={`list-group-item ${
-              selectedIndex === index ? "active" : ""
-            }`}
+            active={selectedIndex === index}
             onClick={() => {
               handleClick(index);
               onSelectItem(item);
             }}
           >
             {item}
-          </li>
+          </StyledListItem>
         ))}
-      </ul>
+      </StyledList>
     </>
   );
 };
+
+const StyledList = styled.ul`
+  list-style: none;
+`;
+
+const StyledListItem = styled.li<{ active: boolean }>`
+  padding: 0;
+  background-color: ${(props) => (props.active ? "cyan" : "white")};
+  cursor: pointer;
+`;
 
 export default ListGroup;
